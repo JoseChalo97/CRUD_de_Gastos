@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/Elementos de la solución/">
+    <File Path="Base_de_datos_y_tabla.sql" />
+    <File Path="README.MD" />
+  </Folder>
+  <Project Path="CRUD_de_Gastos.csproj" />
+</Solution>
