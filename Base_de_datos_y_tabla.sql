@@ -1,20 +1,19 @@
 
-CREATE DATABASE [GastosDB];
+CREATE DATABASE [AcademiaDB];
 GO
 
-USE [GastosDB];
+USE [AcademiaDB];
 GO
 
-CREATE TABLE [dbo].[Gastos] (
+CREATE TABLE [dbo].[Cursos] (
     [Id]          INT             IDENTITY (1, 1) NOT NULL,
-    [Descripcion] NVARCHAR (100)  NOT NULL,
-    [Monto]       DECIMAL (10, 2) NOT NULL,
-    [Categoria]   NVARCHAR (50)   NOT NULL,
+    [Nombre] NVARCHAR (100)  NOT NULL,
+    [Instructor] NVARCHAR (50) NOT NULL,
+    [Cuota]   DECIMAL (10,2)   NOT NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 GO
 
-INSERT INTO Gastos (Descripcion, Monto, Categoria) VALUES ('Almuerzo', 45.50, 'Comida');
-INSERT INTO Gastos (Descripcion, Monto, Categoria) VALUES ('Gasolina', 250.00, 'Transporte');
-INSERT INTO Gastos (Descripcion, Monto, Categoria) VALUES ('Cine', 75.00, 'Entretenimiento');
+INSERT INTO Cursos (Nombre, Instructor, Cuota) VALUES ('Ingles Basico', 'Marta Lopez', 150.00);
+INSERT INTO Cursos (Nombre, Instructor, Cuota) VALUES ('Frances', 'Luis Perez', 200.00);
 GO

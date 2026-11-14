@@ -1,4 +1,4 @@
-CRUD repositorio gastos
+CRUD repositorio Cursos
 
 Cómo ejecutarlo:
 
@@ -14,9 +14,3 @@ O utiliza el comando dotnet run desde la terminal.
 
 ![Caso 3](img/img-3.png)
 
-![Caso 3](img/img-4.png)
-
-![Caso 4](img/img-5.png)
-
-Link de la explicacion:
-https://drive.google.com/drive/folders/11tfcFvyFLYCaIQ-5DkupvqmiDOUwi9Qe?usp=sharing

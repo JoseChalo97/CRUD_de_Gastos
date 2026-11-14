@@ -5,35 +5,35 @@ using System.Collections.Generic;
 
 namespace CRUD_de_Gastos
 {
-    public class GastoRepositorio
+    public class CursoRepositorio
     {
         private const string CadenaConexion =
             @"Server=(localdb)\MSSQLLocalDB;" +
-            @"Database=GastosDB;" +
+            @"Database=AcademiaDB;" +
             @"Trusted_Connection=True;" +
             @"TrustServerCertificate=True;";
 
-        public void Insertar(Gasto g)
+        public void Insertar(curso g)
         {
-            string sql = "INSERT INTO Gastos (Descripcion, Monto, Categoria) " +
-                         "VALUES (@descripcion, @monto, @categoria)";
+            string sql = "INSERT INTO Cursos (Nombre, Instructor, Cuota) " +
+                         "VALUES (@Nombre, @Instructor, @Cuota)";
 
             using (SqlConnection conexion = new SqlConnection(CadenaConexion))
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             {
-                comando.Parameters.AddWithValue("@descripcion", g.Descripcion);
-                comando.Parameters.AddWithValue("@monto", g.Monto);
-                comando.Parameters.AddWithValue("@categoria", g.Categoria);
+                comando.Parameters.AddWithValue("@Nombre", g.Nombre);
+                comando.Parameters.AddWithValue("@Instructor", g.Instructor);
+                comando.Parameters.AddWithValue("@Cuota", g.Cuota);
 
                 conexion.Open();
                 comando.ExecuteNonQuery();
             }
         }
 
-        public List<Gasto> ListarTodos()
+        public List<curso> ListarTodos()
         {
-            var lista = new List<Gasto>();
-            string sql = "SELECT Id, Descripcion, Monto, Categoria FROM Gastos ORDER BY Id";
+            var lista = new List<curso>();
+            string sql = "SELECT Id, Nombre, Instructor, Cuota FROM Cursos ORDER BY Id";
 
             using (SqlConnection conexion = new SqlConnection(CadenaConexion))
             using (SqlCommand comando = new SqlCommand(sql, conexion))
@@ -43,12 +43,12 @@ namespace CRUD_de_Gastos
                 {
                     while (lector.Read())
                     {
-                        lista.Add(new Gasto
+                        lista.Add(new curso
                         {
                             Id = lector.GetInt32(0),
-                            Descripcion = lector.GetString(1),
-                            Monto = lector.GetDecimal(2),
-                            Categoria = lector.GetString(3)
+                            Nombre = lector.GetString(1),
+                            Cuota = lector.GetDecimal(3),
+                            Instructor = lector.GetString(2)
                         });
                     }
                 }
@@ -56,9 +56,9 @@ namespace CRUD_de_Gastos
             return lista;
         }
 
-        public Gasto? BuscarPorId(int id)
+        public curso? BuscarPorId(int id)
         {
-            string sql = "SELECT Id, Descripcion, Monto, Categoria FROM Gastos WHERE Id = @id";
+            string sql = "SELECT Id, Nombre, Instructor, Cuota FROM Cursos WHERE Id = @id";
 
             using (SqlConnection conexion = new SqlConnection(CadenaConexion))
             using (SqlCommand comando = new SqlCommand(sql, conexion))
@@ -70,46 +70,46 @@ namespace CRUD_de_Gastos
                 {
                     if (lector.Read())
                     {
-                        return new Gasto
+                        return new curso
                         {
                             Id = lector.GetInt32(0),
-                            Descripcion = lector.GetString(1),
-                            Monto = lector.GetDecimal(2),
-                            Categoria = lector.GetString(3)
+                            Nombre = lector.GetString(1),
+                            Cuota = lector.GetDecimal(3),
+                            Instructor = lector.GetString(2)
                         };
                     }
                 }
             }
-            return null; 
+            return null;
         }
 
-        public bool Actualizar(Gasto g)
+        public bool Actualizar(curso g)
         {
-            string sql = "UPDATE Gastos SET Descripcion = @descripcion, Monto = @monto, Categoria = @categoria WHERE Id = @id";
+            string sql = "UPDATE Cursos SET Nombre = @Nombre, Instructor = @Instructor, Cuota = @Cuota WHERE Id = @id";
 
             using (SqlConnection conexion = new SqlConnection(CadenaConexion))
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             {
-                comando.Parameters.AddWithValue("@descripcion", g.Descripcion);
-                comando.Parameters.AddWithValue("@monto", g.Monto);
-                comando.Parameters.AddWithValue("@categoria", g.Categoria);
+                comando.Parameters.AddWithValue("@Nombre", g.Nombre);
+                comando.Parameters.AddWithValue("@Instructor", g.Instructor);
+                comando.Parameters.AddWithValue("@Cuota", g.Cuota);
                 comando.Parameters.AddWithValue("@id", g.Id);
 
                 conexion.Open();
-                return comando.ExecuteNonQuery() == 1; 
+                return comando.ExecuteNonQuery() == 1;
             }
         }
 
         public bool Eliminar(int id)
         {
-            string sql = "DELETE FROM Gastos WHERE Id = @id";
+            string sql = "DELETE FROM Cursos WHERE Id = @id";
 
             using (SqlConnection conexion = new SqlConnection(CadenaConexion))
             using (SqlCommand comando = new SqlCommand(sql, conexion))
             {
                 comando.Parameters.AddWithValue("@id", id);
                 conexion.Open();
-                return comando.ExecuteNonQuery() == 1; 
+                return comando.ExecuteNonQuery() == 1;
             }
         }
     }

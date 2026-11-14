@@ -9,7 +9,7 @@ namespace CRUD_de_Gastos
     {
         public static void Main(string[] args)
         {
-            GastoRepositorio repo = new GastoRepositorio();
+            CursoRepositorio repo = new CursoRepositorio();
             string opcion;
 
             do
@@ -19,16 +19,16 @@ namespace CRUD_de_Gastos
                 switch (opcion)
                 {
                     case "1":
-                        RegistrarGasto(repo);
+                        RegistrarCurso(repo);
                         break;
                     case "2":
-                        ListarGastos(repo);
+                        ListarCurso(repo);
                         break;
                     case "3":
-                        BuscarGastoPorId(repo);
+                        BuscarCursoPorId(repo);
                         break;
                     case "4":
-                        ActualizarMontoGasto(repo);
+                        ActualizarCuotaCurso(repo);
                         break;
                     case "5":
                         EliminarGasto(repo);
@@ -48,29 +48,29 @@ namespace CRUD_de_Gastos
 
         private static string LeerOpcionMenu()
         {
-            Console.WriteLine("REGISTRO DE GASTOS (CRUD)");
-            Console.WriteLine("1. Registrar gasto");
-            Console.WriteLine("2. Listar gastos");
-            Console.WriteLine("3. Buscar gasto por Id");
-            Console.WriteLine("4. Actualizar monto");
-            Console.WriteLine("5. Eliminar gasto");
+            Console.WriteLine("REGISTRO DE Cursos (CRUD)");
+            Console.WriteLine("1. Registrar Curso");
+            Console.WriteLine("2. Listar Curso");
+            Console.WriteLine("3. Buscar Curso por Id");
+            Console.WriteLine("4. Actualizar Cuota");
+            Console.WriteLine("5. Eliminar Curso");
             Console.WriteLine("6. Salir");
             Console.Write("Elige una opción:");
             return Console.ReadLine().Trim();
         }
 
-        private static void RegistrarGasto(GastoRepositorio repo)
+        private static void RegistrarCurso(CursoRepositorio repo)
         {
-            Console.Write("Descripción:");
-            string descripcion = Console.ReadLine().Trim();
+            Console.Write("Nombre:");
+            string Nombre = Console.ReadLine().Trim();
 
-            Console.Write("Monto:");
-            bool montoOk = decimal.TryParse(Console.ReadLine(), out decimal monto);
+            Console.Write("Instructor:");
+            string Instructor = Console.ReadLine().Trim();
 
-            Console.Write("Categoría:");
-            string categoria = Console.ReadLine().Trim();
+            Console.Write("Cuota:");
+            bool CuotaOk = decimal.TryParse(Console.ReadLine(), out decimal Cuota);
 
-            if (!montoOk || monto <= 0 || string.IsNullOrWhiteSpace(descripcion) || string.IsNullOrWhiteSpace(categoria))
+            if (!CuotaOk || Cuota <= 0 || string.IsNullOrWhiteSpace(Nombre) || string.IsNullOrWhiteSpace(Instructor))
             {
                 Console.WriteLine("Datos inválidos.");
                 return;
@@ -78,14 +78,14 @@ namespace CRUD_de_Gastos
 
             try
             {
-                Gasto nuevoGasto = new Gasto
+                curso nuevoCurso = new curso 
                 {
-                    Descripcion = descripcion,
-                    Monto = monto,
-                    Categoria = categoria
+                    Nombre = Nombre,
+                    Cuota = Cuota,
+                    Instructor = Instructor
                 };
-                repo.Insertar(nuevoGasto);
-                Console.WriteLine("Gasto registrado.");
+                repo.Insertar(nuevoCurso);
+                Console.WriteLine("Curso registrado.");
             }
             catch (SqlException ex)
             {
@@ -93,26 +93,26 @@ namespace CRUD_de_Gastos
             }
         }
 
-        private static void ListarGastos(GastoRepositorio repo)
+        private static void ListarCurso(CursoRepositorio repo)
         {
             try
             {
-                List<Gasto> lista = repo.ListarTodos();
+                List<curso> lista = repo.ListarTodos();
 
                 if (lista.Count == 0)
                 {
-                    Console.WriteLine("No hay gastos registrados.");
+                    Console.WriteLine("No hay Cursos registrados.");
                     return;
                 }
-                Console.WriteLine($"{"Id",-3} {"Descripcion",-20} Q {"Monto",7}  {"Categoria",-15}");
-                decimal totalGastado = 0;
-                foreach (Gasto g in lista)
+                Console.WriteLine($"{"Id",-3} {"Nombre",-20} {"Instructor",-15} Q {"Cuota",7}");
+                decimal totalCuotas = 0;
+                foreach (curso g in lista)
                 {
                     Console.WriteLine(g);
-                    totalGastado += g.Monto;
+                    totalCuotas += g.Cuota;
                 }
 
-                Console.WriteLine($"TOTAL GASTADO: Q {totalGastado:N2}");
+                Console.WriteLine($"TOTAL CUOTAS: Q {totalCuotas:N2}");
             }
             catch (SqlException ex)
             {
@@ -120,9 +120,9 @@ namespace CRUD_de_Gastos
             }
         }
 
-        private static void BuscarGastoPorId(GastoRepositorio repo)
+        private static void BuscarCursoPorId(CursoRepositorio repo)
         {
-            Console.Write("Id del gasto a buscar:");
+            Console.Write("Id del Curso a buscar:");
             if (!int.TryParse(Console.ReadLine(), out int id))
             {
                 Console.WriteLine("Id inválido.");
@@ -131,8 +131,8 @@ namespace CRUD_de_Gastos
 
             try
             {
-                Gasto? gasto = repo.BuscarPorId(id);
-                Console.WriteLine(gasto == null ? "No existe ese Id." : gasto.ToString());
+                curso? curso = repo.BuscarPorId(id);
+                Console.WriteLine(curso == null ? "No existe ese Id." : curso.ToString());
             }
             catch (SqlException ex)
             {
@@ -140,9 +140,9 @@ namespace CRUD_de_Gastos
             }
         }
 
-        private static void ActualizarMontoGasto(GastoRepositorio repo)
+        private static void ActualizarCuotaCurso(CursoRepositorio repo)
         {
-            Console.Write("Id del gasto a actualizar:");
+            Console.Write("Id del Curso a actualizar:");
             if (!int.TryParse(Console.ReadLine(), out int id))
             {
                 Console.WriteLine("Id inválido.");
@@ -151,24 +151,24 @@ namespace CRUD_de_Gastos
 
             try
             {
-                Gasto? gasto = repo.BuscarPorId(id);
-                if (gasto == null)
+                curso? Curso = repo.BuscarPorId(id);
+                if (Curso == null)
                 {
                     Console.WriteLine("No existe ese Id.");
                     return;
                 }
 
-                Console.WriteLine($"Gasto actual: {gasto}");
-                Console.Write("Nuevo monto:");
-                if (!decimal.TryParse(Console.ReadLine(), out decimal nuevoMonto) || nuevoMonto <= 0)
+                Console.WriteLine($"Gasto actual: {Curso}");
+                Console.Write("Nueva Cuota:");
+                if (!decimal.TryParse(Console.ReadLine(), out decimal nuevoCuota) || nuevoCuota <= 0)
                 {
-                    Console.WriteLine("Monto inválido.");
+                    Console.WriteLine("Cuota inválido.");
                     return;
                 }
 
-                gasto.Monto = nuevoMonto;
-                bool actualizado = repo.Actualizar(gasto);
-                Console.WriteLine(actualizado ? "Gasto actualizado." : "No se actualizó.");
+                Curso.Cuota = nuevoCuota;
+                bool actualizado = repo.Actualizar(Curso);
+                Console.WriteLine(actualizado ? "Curso actualizado." : "No se actualizó.");
             }
             catch (SqlException ex)
             {
@@ -176,9 +176,9 @@ namespace CRUD_de_Gastos
             }
         }
 
-        private static void EliminarGasto(GastoRepositorio repo)
+        private static void EliminarGasto(CursoRepositorio repo)
         {
-            Console.Write("Id del gasto a eliminar:");
+            Console.Write("Id del Curso a eliminar:");
             if (!int.TryParse(Console.ReadLine(), out int id))
             {
                 Console.WriteLine("Id inválido.");
@@ -188,7 +188,7 @@ namespace CRUD_de_Gastos
             try
             {
                 bool eliminado = repo.Eliminar(id);
-                Console.WriteLine(eliminado ? "Gasto eliminado." : "No existe ese Id.");
+                Console.WriteLine(eliminado ? "Curso eliminado." : "No existe ese Id.");
             }
             catch (SqlException ex)
             {
